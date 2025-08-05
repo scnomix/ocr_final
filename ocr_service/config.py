@@ -3,7 +3,7 @@ import streamlit as st
 # ——— Gemini / Google GenAI settings ———
 # API_KEY      = st.secrets["GEMINI_API_KEY"]
 API_KEY="AIzaSyDeNz2IhcaMblFvMOR5eImvdqo-RhyoykU"
-GEMINI_MODEL = "gemini-2.5-flash"
+GEMINI_MODEL = "gemini-2.0-flash"
 
 # ——— General defaults ———
 PDF_IMAGE_DPI    = 300
