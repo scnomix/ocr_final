@@ -40,7 +40,7 @@ CBE Tenor will be found like in the header the مركز مجمع اعميل نه
 Print Date:
 Governorate Code  (next to the industry so it is found between the industry name and مرتبطونurl):
 Governorate Name:
-Industry Code ():
+Industry Code (this code doesn't contain a backslash '/') as the code with the backslash is not needed:
 Industry :
 Finance List which is the banks where the client deals with it will be found in table you should extract all the numbers in it the table header is بنوك التعامل:
 
