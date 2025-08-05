@@ -38,9 +38,9 @@ Client Name:
 CBE Code:
 CBE Tenor will be found like in the header the مركز مجمع اعميل نهاية شهر note this should be the end of the month (eg.so if نهاية شهر 8/2022 return "2022-08-31"):
 Print Date:
-Governorate Code (next to the governorate Name) (just after it):
+Governorate Code (next to the governorate Name so it is found between teh CBE code and Governorate Name) :
 Governorate Name:
-Industry Code (next to the industry(just after it)):
+Industry Code (next to the industry so it is found between the industry name and مرتبطونurl):
 Industry :
 Finance List which is the banks where the client deals with it will be found in table you should extract all the numbers in it the table header is بنوك التعامل:
 
