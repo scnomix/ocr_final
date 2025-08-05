@@ -49,6 +49,7 @@ Use English digits for numbers and dates. Finance List should list all numeric a
 ===BEGIN REPORT TEXT===
 {text}
 ===END REPORT TEXT===
+Note if the Governorate Name is Cairo or "القاهرة" then the Governorate Code should be 1 and if the Governorate Name is Giza or "الجيزة" then the Governorate Code should be 55
 Return only the lines of 'Key: Value'.
 """  
 
