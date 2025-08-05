@@ -57,7 +57,7 @@ You are given combined OCR text from the FRONT and BACK of an Egyptian national 
 {record_text}
 
 Extract the following fields and return a JSON object with exactly these keys:
-  full_name (line 1), note the first name will be found in one line doesn't contain any thing else so you should concate it with the parent name.
+  full_name (line 1), note the first name will be found in one line and followed by line break doesn't contain any thing else so you should concate it with the parent name.
   gender ('Male' or 'Female'),
   date_of_birth (YYYY-MM-DD), national_id_number (14 digits),
   issue_date (YYYY-MM-DD), expiration_date (YYYY-MM-DD),
