@@ -3,11 +3,13 @@ from pathlib import Path
 import base64
 import fitz  # PyMuPDF
 import streamlit.components.v1 as components
-from ocr_service.pipeline import process_document
-from ocr_service.classifier import DocumentType
+import tempfile
 import json
 
-st.set_page_config(page_title="OCR & Extraction App", layout="wide")
+from ocr_service.pipeline import process_document
+from ocr_service.classifier import DocumentType
+
+st.set_page_config(page_title="OCR & Data Extraction", layout="wide")
 st.title("📄 OCR & Data Extraction")
 st.write("Upload a PDF and get its classification and extracted data instantly.")
 
@@ -15,22 +17,16 @@ st.write("Upload a PDF and get its classification and extracted data instantly."
 uploaded_file = st.file_uploader("Choose a PDF file", type=["pdf"])
 
 if uploaded_file:
-    # Save uploaded PDF
-    temp_dir = Path("./.tmp_uploads")
-    temp_dir.mkdir(exist_ok=True)
-    pdf_path = temp_dir / uploaded_file.name
-    with open(pdf_path, "wb") as f:
-        f.write(uploaded_file.getbuffer())
-
-    # Submit button to start processing
+    # Only start processing when the user clicks
     if st.button("Submit PDF for Processing"):
-        col1, col2 = st.columns([2,1])
+        # Use an ephemeral temp directory for all file writes
+        with tempfile.TemporaryDirectory() as tmpdirname:
+            tmpdir = Path(tmpdirname)
+            pdf_path = tmpdir / uploaded_file.name
+            pdf_path.write_bytes(uploaded_file.getbuffer())
 
-        # Column 1: PDF Viewer without zoom
-        with col1:
-            st.subheader("PDF Viewer")
-            pdf_bytes = pdf_path.read_bytes()
-            doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+            # Render PDF pages to base64-encoded PNGs
+            doc = fitz.open(stream=pdf_path.read_bytes(), filetype="pdf")
             page_imgs = []
             for page in doc:
                 pix = page.get_pixmap(matrix=fitz.Matrix(1.5, 1.5))
@@ -38,10 +34,15 @@ if uploaded_file:
                 page_imgs.append(f"data:image/png;base64,{b64}")
             doc.close()
 
+            n_pages = len(page_imgs)
             js_pages = json.dumps(page_imgs)
-            n_pages  = len(page_imgs)
 
-            html = f"""
+            # Layout: wide viewer + extraction
+            col1, col2 = st.columns([2, 1])
+
+            with col1:
+                st.subheader("PDF Viewer")
+                html = f"""
 <style>
   .viewer-container {{ width:100%; max-width:800px; margin:auto; }}
   .controls {{ text-align:center; margin-bottom:8px; }}
@@ -82,15 +83,14 @@ if uploaded_file:
 }})();
 </script>
 """
-            components.html(html, height=800, scrolling=False)
+                components.html(html, height=800, scrolling=False)
 
-        # Column 2: Extraction Results
-        with col2:
-            st.subheader("Extraction Results")
-            with st.spinner("Classifying..."):
-                doc_type = process_document.__globals__["classify_pdf"](str(pdf_path))
-            st.markdown(f"**Document Type:** `{doc_type.name}`")
+            with col2:
+                st.subheader("Extraction Results")
+                with st.spinner("Classifying..."):
+                    doc_type = process_document.__globals__["classify_pdf"](str(pdf_path))
+                st.markdown(f"**Document Type:** `{doc_type.name}`")
 
-            with st.spinner("Extracting..."):
-                result = process_document(str(pdf_path))
-            st.json(result)
+                with st.spinner("Extracting..."):
+                    result = process_document(str(pdf_path))
+                st.json(result)
