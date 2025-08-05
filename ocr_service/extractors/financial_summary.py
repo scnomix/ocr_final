@@ -38,7 +38,7 @@ Client Name:
 CBE Code:
 CBE Tenor will be found like in the header the مركز مجمع اعميل نهاية شهر note this should be the end of the month (eg.so if نهاية شهر 8/2022 return "2022-08-31"):
 Print Date:
-Governorate Code (next to the governorate Name so it is found between teh CBE code and Governorate Name) :
+Governorate Code (next to the governorate Name so it is found between teh CBE code and Governorate Name) eg giza should be 55:
 Governorate Name:
 Industry Code (next to the industry so it is found between the industry name and مرتبطونurl):
 Industry :
